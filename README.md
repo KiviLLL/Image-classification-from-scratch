@@ -31,7 +31,8 @@ import matplotlib.pyplot as plt
  !unzip -q kagglecatsanddogs_5340.zip
  !ls
  !ls PetImages
- ```  
+ ```
+!img<https://github.com/KiviLLL/Image-classification-from-scratch/pull/1/commits/1ba96b5bb0f248c797e0203dda430303e514546f#diff-895dbcf06f1df69a06c04acb294ec6977ced9fbf85d5b50bf4993e0f11af9898>
    現在我們有一個PetImages包含兩個子資料夾的資料夾，Cat和Dog。每個子資料夾包含每個類別的圖像檔案  
 • 4.過濾掉損壞的影像:  
    在處理大量現實世界影像資料時，損壞的影像是很常見的情況。讓我們過濾掉標題中不包含字串「JFIF」的編碼錯誤的圖像。  
