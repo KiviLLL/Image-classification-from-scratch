@@ -34,7 +34,7 @@ import matplotlib.pyplot as plt
  !unzip -q kagglecatsanddogs_5340.zip
  !ls
  ```
->現在我們有一個PetImages包含兩個子資料夾的資料夾，Cat和Dog。每個子資料夾包含每個類別的圖像檔案。
+     >現在我們有一個PetImages包含兩個子資料夾的資料夾，Cat和Dog。每個子資料夾包含每個類別的圖像檔案。<
 • 4.建構對影像進行分類的神經網路機器學習模型:  
     透過堆疊層來建構tf.keras.Sequential模型。
     針對每個樣本，模型都會傳回一個包含logits或log-odds分數的向量，每個類別一個。     
