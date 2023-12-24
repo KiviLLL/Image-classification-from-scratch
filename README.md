@@ -37,30 +37,41 @@ import matplotlib.pyplot as plt
  ```  
    現在我們有一個PetImages包含兩個子資料夾的資料夾，Cat和Dog。每個子資料夾包含每個類別的圖像檔案  
 • 4.過濾掉損壞的影像:  
-    在處理大量現實世界影像資料時，損壞的影像是很常見的情況。讓我們過濾掉標題中不包含字串「JFIF」的編碼錯誤的圖像。  
-    ```
-    num_skipped = 0
-   for folder_name in ("Cat", "Dog"):
-    folder_path = os.path.join("PetImages", folder_name)
-    for fname in os.listdir(folder_path):
-        fpath = os.path.join(folder_path, fname)
-        try:
-            fobj = open(fpath, "rb")
-            is_jfif = b"JFIF" in fobj.peek(10)
-        finally:
-            fobj.close()
-        if not is_jfif:
-            num_skipped += 1
-            # Delete corrupted image
-            os.remove(fpath)
+   在處理大量現實世界影像資料時，損壞的影像是很常見的情況。讓我們過濾掉標題中不包含字串「JFIF」的編碼錯誤的圖像。  
+ ```
+num_skipped = 0
+for folder_name in ("Cat", "Dog"):
+folder_path = os.path.join("PetImages", folder_name)
+for fname in os.listdir(folder_path):
+fpath = os.path.join(folder_path, fname)
+ try:
+ fobj = open(fpath, "rb")
+is_jfif = b"JFIF" in fobj.peek(10)
+finally:
+fobj.close()
+if not is_jfif:
+num_skipped += 1
+# Delete corrupted image
+os.remove(fpath)
 print(f"Deleted {num_skipped} images.")
-    ```
+ ```
 
-• 5.訓練並評估模型的準確率:      
-     訓練之前，使用KerasModel.compile配置和編譯模型。將optimizer類別設為adam，將loss設定為您先前定義的loss_fn函數，並透過將metrics參數設為 來accuracy指定要為模型評估的指標     
-    使用Model.fit方法調整您的模型參數並最小化損失   準確度將近達到98% 
-    想讓模型傳回機率，可以封裝經過訓練的模型，並將softmax 附加到該模型    
-![img](https://github.com/KiviLLL/TensorFlow2.0/blob/main/img4.png)  
-     最後恭喜！成功利用Keras API 借助預建資料集訓練了一個機器學習模型。     
+• 5.生成一個Dataset:      
+   訓練之前，使用KerasModel.compile配置和編譯模型。將optimizer類別設為adam，將loss設定為您先前定義的loss_fn函數，並透過將metrics參數設為 來accuracy指定要為模型評估的指標     
+```python
+image_size = (180, 180)
+batch_size = 128
+
+train_ds, val_ds = keras.utils.image_dataset_from_directory(
+    "PetImages",
+    validation_split=0.2,
+    subset="both",
+    seed=1337,
+    image_size=image_size,
+    batch_size=batch_size,
+)
+```
+• 6.視覺化數據:      
+   以下是訓練資料集中的前 9 張圖像。          
 # 參考資料
 https://keras.io/examples/vision/image_classification_from_scratch/
