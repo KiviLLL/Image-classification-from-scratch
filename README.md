@@ -8,24 +8,23 @@
 # 大綱
 • 在 Kaggle Cats vs Dogs 資料集上從頭開始訓練影像分類器    
 • 此範例展示如何從頭開始進行影像分類，從磁碟上的 JPEG 影像檔案開始，而不利用預先訓練的權重或預製的 Keras 應用程式模型。我們在 Kaggle Cats vs Dogs 二元分類資料集上示範了工作流程    
-• 我們使用此image_dataset_from_directory實用程式產生資料集，並使用 Keras 影像預處理層進行影像標準化和資料增強。
+• 我們使用此image_dataset_from_directory實用程式產生資料集，並使用 Keras 影像預處理層進行影像標準化和資料增強。  
 # 準備資源
 • 請準備一個可以使用google colab的帳號   
 • 下載附上的：從頭開始影像分類.ipynb (也可以不下載 按照以下步驟親自體驗)  
 # 實作方法  
 • 將使用Keras 3在google colab進行以下操作：  
 • 1.登入Google  
-• 2.打開colab，輸入以下指令進行設定  
-
-`import os     
-import numpy as np     
-import keras     
-from keras import layers     
-from tensorflow import data as tf_data     
-import matplotlib.pyplot as plt     
-from keras import layers          
-from tensorflow import data as tf_data     
-import matplotlib.pyplot as plt      
+• 2.打開colab，輸入以下指令進行設定   
+`import os  
+import numpy as np  
+import keras  
+from keras import layers  
+from tensorflow import data as tf_data  
+import matplotlib.pyplot as plt  
+from keras import layers  
+from tensorflow import data as tf_data   
+import matplotlib.pyplot as plt  
 `     
 
 • 3.載入一個預先建置的資料集:     
