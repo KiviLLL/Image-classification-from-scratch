@@ -82,7 +82,7 @@ for images, labels in train_ds.take(1):
 ```
 • 7.使用影像資料增強:      
    沒有大型圖像資料集時，最好的做法是透過對訓練圖像應用隨機但真實的變換（例如隨機水平翻轉或小型隨機旋轉）來人為地引入樣本多樣性。這有助於讓模型接觸訓練資料的不同方面，同時減緩過度擬合。  
-```pyhon
+```python
 data_augmentation_layers = [
     layers.RandomFlip("horizontal"),
     layers.RandomRotation(0.1),
