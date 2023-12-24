@@ -4,7 +4,7 @@
 # 目錄
 •大綱  
 •準備資源  
-•實作方法  
+•實作方法和說明  
 # 大綱
 • 在 Kaggle Cats vs Dogs 資料集上從頭開始訓練影像分類器    
 • 此範例展示如何從頭開始進行影像分類，從磁碟上的 JPEG 影像檔案開始，而不利用預先訓練的權重或預製的 Keras 應用程式模型。我們在 Kaggle Cats vs Dogs 二元分類資料集上示範了工作流程    
@@ -12,7 +12,7 @@
 # 準備資源
 • 請準備一個可以使用google colab的帳號   
 • 下載附上的：從頭開始影像分類.ipynb (也可以不下載 按照以下步驟親自體驗)  
-# 實作方法  
+# 實作方法和說明  
 • 將使用Keras 3在google colab進行以下操作：  
 • 1.登入Google  
 • 2.打開colab，輸入以下指令進行設定   
@@ -27,14 +27,15 @@ from keras import layers
 from tensorflow import data as tf_data 
 import matplotlib.pyplot as plt
 ```
-• 3.:     
-     首先將TensorFlow 匯入到您的程式
-     載入並準備MNIST 資料集。將樣本資料從整數轉換為浮點數   
+• 3.載入資料：貓狗大戰資料集  
+     原始資料下載並解壓縮  
  ```
  !curl -O https://download.microsoft.com/download/3/E/1/3E1C3F21-ECDB-4869-8368-6DEBA77B919F/kagglecatsanddogs_5340.zip
  !unzip -q kagglecatsanddogs_5340.zip
  !ls
  ```
+     成功會長這樣
+![img](https://github.com/KiviLLL/TensorFlow2.0/blob/main/img3.png) 
 • 4.建構對影像進行分類的神經網路機器學習模型:  
     透過堆疊層來建構tf.keras.Sequential模型。
     針對每個樣本，模型都會傳回一個包含logits或log-odds分數的向量，每個類別一個。     
