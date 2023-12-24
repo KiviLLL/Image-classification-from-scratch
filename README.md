@@ -16,7 +16,8 @@
 • 將使用Keras 3在google colab進行以下操作：  
 • 1.登入Google  
 • 2.打開colab，輸入以下指令進行設定   
-`import os  
+```
+import os  
 import numpy as np  
 import keras  
 from keras import layers  
@@ -25,7 +26,7 @@ import matplotlib.pyplot as plt
 from keras import layers  
 from tensorflow import data as tf_data   
 import matplotlib.pyplot as plt  
-`     
+```
 
 • 3.載入一個預先建置的資料集:     
      首先將TensorFlow 匯入到您的程式
