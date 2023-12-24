@@ -29,7 +29,7 @@ import matplotlib.pyplot as plt
 ```
 • 3.載入資料：貓狗大戰資料集  
    原始資料下載並解壓縮  
- ```Keras
+ ```python
  !curl -O https://download.microsoft.com/download/3/E/1/3E1C3F21-ECDB-4869-8368-6DEBA77B919F/kagglecatsanddogs_5340.zip
  !unzip -q kagglecatsanddogs_5340.zip
  !ls
@@ -38,7 +38,7 @@ import matplotlib.pyplot as plt
    現在我們有一個PetImages包含兩個子資料夾的資料夾，Cat和Dog。每個子資料夾包含每個類別的圖像檔案  
 • 4.過濾掉損壞的影像:  
    在處理大量現實世界影像資料時，損壞的影像是很常見的情況。讓我們過濾掉標題中不包含字串「JFIF」的編碼錯誤的圖像。  
- ```
+ ```python
 num_skipped = 0
 for folder_name in ("Cat", "Dog"):
 folder_path = os.path.join("PetImages", folder_name)
