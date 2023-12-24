@@ -16,7 +16,7 @@
 • 將使用Keras 3在google colab進行以下操作：  
 • 1.登入Google  
 • 2.打開colab，輸入以下指令進行設定   
-```
+```python
 import os
 import numpy as np
 import keras
@@ -29,7 +29,7 @@ import matplotlib.pyplot as plt
 ```
 • 3.載入資料：貓狗大戰資料集  
    原始資料下載並解壓縮  
- ```
+ ```Keras
  !curl -O https://download.microsoft.com/download/3/E/1/3E1C3F21-ECDB-4869-8368-6DEBA77B919F/kagglecatsanddogs_5340.zip
  !unzip -q kagglecatsanddogs_5340.zip
  !ls
