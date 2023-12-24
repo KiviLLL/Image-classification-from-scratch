@@ -109,7 +109,6 @@ for images, _ in train_ds.take(1):
    使用此選項，您的資料增強將在 CPU 上非同步發生，並在進入模型之前進行緩衝。  
    如果您正在 CPU 上進行訓練，這是更好的選擇，因為它使資料增強非同步且非阻塞  
 ```python
-//選項二
 augmented_train_ds = train_ds.map(
     lambda x, y: (data_augmentation(x), y))
 ```
