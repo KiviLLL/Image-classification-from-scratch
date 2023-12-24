@@ -197,9 +197,9 @@ model.fit(
     validation_data=val_ds,
 )
 ```
-   理論上完整資料集上訓練 25 個 epoch 後驗證準確率達到了 >90%（但google colab免費RAM跑不到25個，建議訓練在10個內）。
+   理論上完整資料集上訓練 25 個 epoch 後驗證準確率達到了 >90%（但google colab免費RAM跑不到25個，建議訓練在10個內）。  
 • 12.對新數據進行推理:       
-   請注意，資料增強和遺失在推理時處於非活動狀態。
+   請注意，資料增強和遺失在推理時處於非活動狀態。  
 ```python
 img = keras.utils.load_img("PetImages/Cat/6779.jpg", target_size=image_size)
 plt.imshow(img)
