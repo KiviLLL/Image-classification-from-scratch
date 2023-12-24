@@ -53,6 +53,7 @@ num_skipped += 1
 os.remove(fpath)
 print(f"Deleted {num_skipped} images.")
  ```
+![img](https://github.com/KiviLLL/Image-classification-from-scratch/blob/KiviLLL-patch-1/img2.png)  
 
 • 5.生成一個Dataset:      
 ```python
@@ -68,6 +69,7 @@ train_ds, val_ds = keras.utils.image_dataset_from_directory(
     batch_size=batch_size,
 )
 ```
+![img](https://github.com/KiviLLL/Image-classification-from-scratch/blob/KiviLLL-patch-1/img4.png)  
 • 6.視覺化數據:      
    以下是訓練資料集中的前 9 張圖像。         
 ```python
@@ -78,7 +80,8 @@ for images, labels in train_ds.take(1):
         plt.imshow(np.array(images[i]).astype("uint8"))
         plt.title(int(labels[i]))
         plt.axis("off")
-```
+```  
+![img](https://github.com/KiviLLL/Image-classification-from-scratch/blob/KiviLLL-patch-1/%E4%B8%8B%E8%BC%89%20(1).png)   
 • 7.使用影像資料增強:      
    沒有大型圖像資料集時，最好的做法是透過對訓練圖像應用隨機但真實的變換（例如隨機水平翻轉或小型隨機旋轉）來人為地引入樣本多樣性。這有助於讓模型接觸訓練資料的不同方面，同時減緩過度擬合。  
 ```python
@@ -103,6 +106,7 @@ for images, _ in train_ds.take(1):
         plt.imshow(np.array(augmented_images[0]).astype("uint8"))
         plt.axis("off")
 ```
+![img](https://github.com/KiviLLL/Image-classification-from-scratch/blob/KiviLLL-patch-1/%E4%B8%8B%E8%BC%89%20(2).png) 
 • 8.處理資料:       
    將其套用到資料集，以獲得產生批量增強影像的資料集  
    使用此選項，您的資料增強將在 CPU 上非同步發生，並在進入模型之前進行緩衝。  
@@ -177,6 +181,7 @@ def make_model(input_shape, num_classes):
 model = make_model(input_shape=image_size + (3,), num_classes=2)
 keras.utils.plot_model(model, show_shapes=True)
 ```
+https://github.com/KiviLLL/Image-classification-from-scratch/blob/KiviLLL-patch-1/%E4%B8%8B%E8%BC%89%20(3).png
 • 11.訓練AI模型:       
 ```python
 epochs = 10
@@ -196,6 +201,7 @@ model.fit(
     validation_data=val_ds,
 )
 ```
+![img](https://github.com/KiviLLL/Image-classification-from-scratch/blob/KiviLLL-patch-1/img5.png)   
    理論上完整資料集上訓練 25 個 epoch 後驗證準確率達到了 >90%（但google colab免費RAM跑不到25個，建議訓練在10個內）。  
 • 12.對新數據進行推理:       
    請注意，資料增強和遺失在推理時處於非活動狀態。  
@@ -209,6 +215,7 @@ img_array = tf.expand_dims(img_array, 0)  # Create batch axis
 predictions = model.predict(img_array)
 score = float(keras.activations.sigmoid(predictions[0][0]))
 print(f"This image is {100 * (1 - score):.2f}% cat and {100 * score:.2f}% dog.")
-```  
+```
+![img](https://github.com/KiviLLL/Image-classification-from-scratch/blob/KiviLLL-patch-1/img6.png)   
 # 參考資料
 https://keras.io/examples/vision/image_classification_from_scratch/
