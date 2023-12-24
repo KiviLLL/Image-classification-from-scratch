@@ -1,4 +1,4 @@
-# 從頭開始影像分類
+![image](https://github.com/KiviLLL/Image-classification-from-scratch/assets/90845060/4cf1e0ff-cadb-4c8e-b053-99b2283158a8)# 從頭開始影像分類
 • 南華大學-人工智慧期末報告  
 • 11024156林昀皞  
 # 目錄
@@ -28,13 +28,14 @@ from tensorflow import data as tf_data
 import matplotlib.pyplot as plt
 ```
 • 3.載入資料：貓狗大戰資料集  
-     原始資料下載並解壓縮  
+   原始資料下載並解壓縮  
  ```
  !curl -O https://download.microsoft.com/download/3/E/1/3E1C3F21-ECDB-4869-8368-6DEBA77B919F/kagglecatsanddogs_5340.zip
  !unzip -q kagglecatsanddogs_5340.zip
  !ls
+ !ls PetImages
  ```
-     >現在我們有一個PetImages包含兩個子資料夾的資料夾，Cat和Dog。每個子資料夾包含每個類別的圖像檔案。<
+   現在我們有一個PetImages包含兩個子資料夾的資料夾，Cat和Dog。每個子資料夾包含每個類別的圖像檔案。
 • 4.建構對影像進行分類的神經網路機器學習模型:  
     透過堆疊層來建構tf.keras.Sequential模型。
     針對每個樣本，模型都會傳回一個包含logits或log-odds分數的向量，每個類別一個。     
