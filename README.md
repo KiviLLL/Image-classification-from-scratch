@@ -27,10 +27,14 @@ from keras import layers
 from tensorflow import data as tf_data 
 import matplotlib.pyplot as plt
 ```
-• 3.載入一個預先建置的資料集:     
+• 3.:     
      首先將TensorFlow 匯入到您的程式
      載入並準備MNIST 資料集。將樣本資料從整數轉換為浮點數   
-![img](https://github.com/KiviLLL/TensorFlow2.0/blob/main/img2.png)  
+     ```
+     !curl -O https://download.microsoft.com/download/3/E/1/3E1C3F21-ECDB-4869-8368-6DEBA77B919F/kagglecatsanddogs_5340.zip
+     !unzip -q kagglecatsanddogs_5340.zip
+     !ls
+     ```
 • 4.建構對影像進行分類的神經網路機器學習模型:  
     透過堆疊層來建構tf.keras.Sequential模型。
     針對每個樣本，模型都會傳回一個包含logits或log-odds分數的向量，每個類別一個。     
