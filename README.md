@@ -1,4 +1,4 @@
-![image](https://github.com/KiviLLL/Image-classification-from-scratch/assets/90845060/4cf1e0ff-cadb-4c8e-b053-99b2283158a8)# 從頭開始影像分類
+# 從頭開始影像分類
 • 南華大學-人工智慧期末報告  
 • 11024156林昀皞  
 # 目錄
@@ -35,14 +35,27 @@ import matplotlib.pyplot as plt
  !ls
  !ls PetImages
  ```  
-   現在我們有一個PetImages包含兩個子資料夾的資料夾，Cat和Dog。每個子資料夾包含每個類別的圖像檔案。
-• 4.建構對影像進行分類的神經網路機器學習模型:  
-    透過堆疊層來建構tf.keras.Sequential模型。
-    針對每個樣本，模型都會傳回一個包含logits或log-odds分數的向量，每個類別一個。     
-    接下來利用tf.nn.softmax函數將這些logits 轉換為每個類別的機率     
-    使用losses.SparseCategoricalCrossentropy為訓練定義損失函數，它會接受logits 向量和True索引，並為每個樣本傳回一個標量損失。     
-    因為尚未經訓練的模型給出的機率接近隨機（每個類別為1/10），因此初始損失應該接近-tf.math.log(1/10) ~= 2.3。     
-![img](https://github.com/KiviLLL/TensorFlow2.0/blob/main/img3.png)  
+   現在我們有一個PetImages包含兩個子資料夾的資料夾，Cat和Dog。每個子資料夾包含每個類別的圖像檔案  
+• 4.過濾掉損壞的影像:  
+    在處理大量現實世界影像資料時，損壞的影像是很常見的情況。讓我們過濾掉標題中不包含字串「JFIF」的編碼錯誤的圖像。  
+    ```
+    num_skipped = 0
+   for folder_name in ("Cat", "Dog"):
+    folder_path = os.path.join("PetImages", folder_name)
+    for fname in os.listdir(folder_path):
+        fpath = os.path.join(folder_path, fname)
+        try:
+            fobj = open(fpath, "rb")
+            is_jfif = b"JFIF" in fobj.peek(10)
+        finally:
+            fobj.close()
+        if not is_jfif:
+            num_skipped += 1
+            # Delete corrupted image
+            os.remove(fpath)
+print(f"Deleted {num_skipped} images.")
+    ```
+
 • 5.訓練並評估模型的準確率:      
      訓練之前，使用KerasModel.compile配置和編譯模型。將optimizer類別設為adam，將loss設定為您先前定義的loss_fn函數，並透過將metrics參數設為 來accuracy指定要為模型評估的指標     
     使用Model.fit方法調整您的模型參數並最小化損失   準確度將近達到98% 
