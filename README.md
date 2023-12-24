@@ -14,17 +14,18 @@
 # 實作方法和說明  
 • 將使用Keras 3在google colab進行以下操作：  
 • 1.登入Google  
-• 2.打開colab，輸入以下指令進行設定   
+• 2.打開colab，輸入以下指令進行設定keras 3   
 ```python
+!pip install -q keras-core
+import numpy as np
 import os
+os.environ["KERAS_BACKEND"] = "jax"
 import numpy as np
 import keras
 from keras import layers
 from tensorflow import data as tf_data
 import matplotlib.pyplot as plt
-from keras import layers
-from tensorflow import data as tf_data 
-import matplotlib.pyplot as plt
+!pip install tensorflow
 ```
 • 3.載入資料：貓狗大戰資料集  
    原始資料下載並解壓縮  
@@ -201,14 +202,17 @@ model.fit(
 • 12.對新數據進行推理:       
    請注意，資料增強和遺失在推理時處於非活動狀態。  
 ```python
+import keras
+import tensorflow as tf
+
 img = keras.utils.load_img("PetImages/Cat/6779.jpg", target_size=image_size)
 plt.imshow(img)
 
 img_array = keras.utils.img_to_array(img)
-img_array = keras.ops.expand_dims(img_array, 0)  # Create batch axis
+img_array = tf.expand_dims(img_array, 0)  # Create batch axis
 
 predictions = model.predict(img_array)
-score = float(keras.ops.sigmoid(predictions[0][0]))
+score = float(keras.activations.sigmoid(predictions[0][0]))
 print(f"This image is {100 * (1 - score):.2f}% cat and {100 * score:.2f}% dog.")
 ```  
 # 參考資料
