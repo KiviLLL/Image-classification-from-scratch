@@ -104,27 +104,113 @@ for images, _ in train_ds.take(1):
         plt.imshow(np.array(augmented_images[0]).astype("uint8"))
         plt.axis("off")
 ```
-• 8.預處理資料的兩種選擇(請選擇一種):  
-   選項1：使其成為模型的一部分  
-         使用此選項，您的資料增強將在設備上進行，與模型執行的其餘部分同步，這意味著它將受益於 GPU 加速。  
-         請注意，資料增強在測試時處於非活動狀態，因此輸入樣本只會在 期間增強fit()，而不是在呼叫evaluate()或 時增強predict()。  
-         如果您正在 GPU 上進行訓練，這可能是個不錯的選擇。   
-   選項2：將其套用到資料集，以獲得產生批量增強影像的資料集  
-         使用此選項，您的資料增強將在 CPU 上非同步發生，並在進入模型之前進行緩衝。  
-          如果您正在 CPU 上進行訓練，這是更好的選擇，因為它使資料增強非同步且非阻塞  
-         在我們的例子中，我們將選擇第二個選項。如果您不確定選擇哪一個，第二個選項（非同步預處理）始終是可靠的選擇。
-```python
-//選項一
-inputs = keras.Input(shape=input_shape)
-x = data_augmentation(inputs)
-x = layers.Rescaling(1./255)(x)
-...  # Rest of the model
-```
+• 8.處理資料:       
+   將其套用到資料集，以獲得產生批量增強影像的資料集  
+   使用此選項，您的資料增強將在 CPU 上非同步發生，並在進入模型之前進行緩衝。  
+   如果您正在 CPU 上進行訓練，這是更好的選擇，因為它使資料增強非同步且非阻塞  
 ```python
 //選項二
 augmented_train_ds = train_ds.map(
-lambda x, y: (data_augmentation(x, training=True), y))
+    lambda x, y: (data_augmentation(x), y))
 ```
+• 9.配置資料集以提高效能:       
+   將資料增強應用於我們的訓練資料集，並確保使用緩衝預取，以便我們可以從磁碟生成數據，而不會導致 I/O 阻塞：  
+```python
+# Apply `data_augmentation` to the training images.
+train_ds = train_ds.map(
+    lambda img, label: (data_augmentation(img), label),
+    num_parallel_calls=tf_data.AUTOTUNE,
+)
+# Prefetching samples in GPU memory helps maximize GPU utilization.
+train_ds = train_ds.prefetch(tf_data.AUTOTUNE)
+val_ds = val_ds.prefetch(tf_data.AUTOTUNE)
+```
+• 10.建立模型:       
+   我們將建立一個小型版本的 Xception 網路。  
+   注意：
+   我們從預處理器開始模型data_augmentation，然後是一層 Rescaling。  
+   我們Dropout在最終分類層之前添加了一個層。  
+```python
+def make_model(input_shape, num_classes):
+    inputs = keras.Input(shape=input_shape)
 
+    # Entry block
+    x = layers.Rescaling(1.0 / 255)(inputs)
+    x = layers.Conv2D(128, 3, strides=2, padding="same")(x)
+    x = layers.BatchNormalization()(x)
+    x = layers.Activation("relu")(x)
+
+    previous_block_activation = x  # Set aside residual
+
+    for size in [256, 512, 728]:
+        x = layers.Activation("relu")(x)
+        x = layers.SeparableConv2D(size, 3, padding="same")(x)
+        x = layers.BatchNormalization()(x)
+
+        x = layers.Activation("relu")(x)
+        x = layers.SeparableConv2D(size, 3, padding="same")(x)
+        x = layers.BatchNormalization()(x)
+
+        x = layers.MaxPooling2D(3, strides=2, padding="same")(x)
+
+        # Project residual
+        residual = layers.Conv2D(size, 1, strides=2, padding="same")(
+            previous_block_activation
+        )
+        x = layers.add([x, residual])  # Add back residual
+        previous_block_activation = x  # Set aside next residual
+
+    x = layers.SeparableConv2D(1024, 3, padding="same")(x)
+    x = layers.BatchNormalization()(x)
+    x = layers.Activation("relu")(x)
+
+    x = layers.GlobalAveragePooling2D()(x)
+    if num_classes == 2:
+        units = 1
+    else:
+        units = num_classes
+
+    x = layers.Dropout(0.25)(x)
+    # We specify activation=None so as to return logits
+    outputs = layers.Dense(units, activation=None)(x)
+    return keras.Model(inputs, outputs)
+
+
+model = make_model(input_shape=image_size + (3,), num_classes=2)
+keras.utils.plot_model(model, show_shapes=True)
+```
+• 11.訓練AI模型:       
+```python
+epochs = 10
+
+callbacks = [
+    keras.callbacks.ModelCheckpoint("save_at_{epoch}.keras"),
+]
+model.compile(
+    optimizer=keras.optimizers.Adam(3e-4),
+    loss=keras.losses.BinaryCrossentropy(from_logits=True),
+    metrics=[keras.metrics.BinaryAccuracy(name="acc")],
+)
+model.fit(
+    train_ds,
+    epochs=epochs,
+    callbacks=callbacks,
+    validation_data=val_ds,
+)
+```
+   理論上完整資料集上訓練 25 個 epoch 後驗證準確率達到了 >90%（但google colab免費RAM跑不到25個，建議訓練在10個內）。
+• 12.對新數據進行推理:       
+   請注意，資料增強和遺失在推理時處於非活動狀態。
+```python
+img = keras.utils.load_img("PetImages/Cat/6779.jpg", target_size=image_size)
+plt.imshow(img)
+
+img_array = keras.utils.img_to_array(img)
+img_array = keras.ops.expand_dims(img_array, 0)  # Create batch axis
+
+predictions = model.predict(img_array)
+score = float(keras.ops.sigmoid(predictions[0][0]))
+print(f"This image is {100 * (1 - score):.2f}% cat and {100 * score:.2f}% dog.")
+```  
 # 參考資料
 https://keras.io/examples/vision/image_classification_from_scratch/
