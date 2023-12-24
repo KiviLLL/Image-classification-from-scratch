@@ -17,15 +17,16 @@
 • 1.登入Google  
 • 2.打開colab，輸入以下指令進行設定  
 
-`import os
-import numpy as np
-import keras
-from keras import layers
-from tensorflow import data as tf_data
-import matplotlib.pyplot as plt
+`import os     
+import numpy as np     
+import keras     
 from keras import layers     
 from tensorflow import data as tf_data     
-import matplotlib.pyplot as plt     `     
+import matplotlib.pyplot as plt     
+from keras import layers          
+from tensorflow import data as tf_data     
+import matplotlib.pyplot as plt      
+`     
 
 • 3.載入一個預先建置的資料集:     
      首先將TensorFlow 匯入到您的程式
