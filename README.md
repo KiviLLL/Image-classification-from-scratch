@@ -16,16 +16,13 @@
 • 1.登入Google  
 • 2.打開colab，輸入以下指令進行設定keras 3   
 ```python
-!pip install -q keras-core
-import numpy as np
 import os
-os.environ["KERAS_BACKEND"] = "jax"
 import numpy as np
 import keras
+import tensorflow as tf
 from keras import layers
 from tensorflow import data as tf_data
 import matplotlib.pyplot as plt
-!pip install tensorflow
 ```
 • 3.載入資料：貓狗大戰資料集  
    原始資料下載並解壓縮  
@@ -202,9 +199,6 @@ model.fit(
 • 12.對新數據進行推理:       
    請注意，資料增強和遺失在推理時處於非活動狀態。  
 ```python
-import keras
-import tensorflow as tf
-
 img = keras.utils.load_img("PetImages/Cat/6779.jpg", target_size=image_size)
 plt.imshow(img)
 
