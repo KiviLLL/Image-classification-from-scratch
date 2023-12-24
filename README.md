@@ -181,7 +181,7 @@ def make_model(input_shape, num_classes):
 model = make_model(input_shape=image_size + (3,), num_classes=2)
 keras.utils.plot_model(model, show_shapes=True)
 ```
-https://github.com/KiviLLL/Image-classification-from-scratch/blob/KiviLLL-patch-1/%E4%B8%8B%E8%BC%89%20(3).png
+![img](https://github.com/KiviLLL/Image-classification-from-scratch/blob/KiviLLL-patch-1/%E4%B8%8B%E8%BC%89%20(3).png) 
 • 11.訓練AI模型:       
 ```python
 epochs = 10
